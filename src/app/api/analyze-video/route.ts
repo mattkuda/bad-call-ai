@@ -6,6 +6,8 @@ import { existsSync } from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import sharp from 'sharp';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
 
 const execPromise = promisify(exec);
 
@@ -16,6 +18,15 @@ interface AIVerdict {
     ruleReference?: string;
     keyFrameIndex: number;
 }
+
+// Define the response schema using Zod
+const ResponseSchema = z.object({
+    decision: z.string().describe("The decision made by the AI. Must be CORRECT_CALL, INCORRECT_CALL, or UNCLEAR."),
+    confidenceScore: z.number().describe("The confidence score of the AI."),
+    explanation: z.string().describe("The explanation of the AI."),
+    ruleReference: z.string().describe("The rule reference of the AI."),
+    keyFrameIndex: z.number().describe("The key frame index of the AI."),
+});
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -54,6 +65,7 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const videoFile = formData.get('video') as File;
         const officialCall = formData.get('officialCall') as string;
+        const aiContext = formData.get('aiContext') as string;
 
         if (!videoFile || !officialCall) {
             return NextResponse.json({ error: 'Video and official call required' }, { status: 400 });
@@ -83,10 +95,9 @@ export async function POST(request: NextRequest) {
                 console.error(`[Video Analysis] Error processing frame ${i}:`, error);
             }
         }
-
         // Send frames to OpenAI Vision API
         const completion = await openai.chat.completions.create({
-            model: "gpt-4-vision-preview",
+            model: "gpt-4o",
             messages: [
                 {
                     role: "user",
@@ -94,6 +105,7 @@ export async function POST(request: NextRequest) {
                         {
                             type: "text",
                             text: `Analyze this basketball play. The official call was: "${officialCall}". 
+                                The context of the play is: "${aiContext}".
                                 Determine if it was a Correct Call, Incorrect Call, or Unclear. 
                                 Consider: player positioning, restricted area violations, ball trajectory, and foul criteria.
                                 Provide: 
@@ -114,28 +126,30 @@ export async function POST(request: NextRequest) {
                 }
             ],
             max_tokens: 1000,
-            response_format: { type: "json_object" }
+            response_format: zodResponseFormat(ResponseSchema, "analysisResponse"),
         });
 
         // Parse AI response
         const aiAnalysis = JSON.parse(completion.choices[0].message.content || "{}") as AIVerdict;
-
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log("aiAnalysis", aiAnalysis);
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         console.log(`[Video Analysis] AI Verdict: ${aiAnalysis.decision}, Confidence: ${aiAnalysis.confidenceScore}%`);
 
         // Generate TTS Audio (Optional)
-        const narrationText = `AI Verdict: ${aiAnalysis.decision}. 
-                                Confidence: ${aiAnalysis.confidenceScore}%. 
-                                ${aiAnalysis.explanation} 
-                                ${aiAnalysis.ruleReference ? 'Rule reference: ' + aiAnalysis.ruleReference : ''}`;
+        // const narrationText = `AI Verdict: ${aiAnalysis.decision}. 
+        //                         Confidence: ${aiAnalysis.confidenceScore}%. 
+        //                         ${aiAnalysis.explanation} 
+        //                         ${aiAnalysis.ruleReference ? 'Rule reference: ' + aiAnalysis.ruleReference : ''}`;
 
-        const narrationResponse = await openai.audio.speech.create({
-            model: "tts-1",
-            voice: "onyx",
-            input: narrationText
-        });
+        // // const narrationResponse = await openai.audio.speech.create({
+        //     model: "tts-1",
+        //     voice: "onyx",
+        //     input: narrationText
+        // });
 
-        const audioBuffer = Buffer.from(await narrationResponse.arrayBuffer());
-        const audioBase64 = audioBuffer.toString('base64');
+        // const audioBuffer = Buffer.from(await narrationResponse.arrayBuffer());
+        // const audioBase64 = audioBuffer.toString('base64');
 
         // Send JSON Response
         return NextResponse.json({
@@ -149,7 +163,7 @@ export async function POST(request: NextRequest) {
                 index: f.index,
                 isKeyFrame: f.index === aiAnalysis.keyFrameIndex
             })),
-            audioNarration: audioBase64
+            // audioNarration: audioBase64
         });
 
     } catch (error) {

@@ -19,3 +19,47 @@ export function formatTimeAgo(date: Date | undefined) {
   return "just now"
 }
 
+/**
+ * Extracts the YouTube video ID from various YouTube URL formats
+ * @param url YouTube URL (can be standard, shortened, or embed format)
+ * @returns YouTube video ID or null if not found
+ */
+export function extractYouTubeVideoId(url: string): string | null {
+  if (!url) return null
+
+  // Handle different YouTube URL formats
+  const regexPatterns = [
+    // Standard YouTube URL: https://www.youtube.com/watch?v=VIDEO_ID
+    /(?:youtube\.com\/watch\?v=|youtube\.com\/watch\?.+&v=)([^&]+)/,
+    // YouTube Embed URL: https://www.youtube.com/embed/VIDEO_ID
+    /youtube\.com\/embed\/([^/?]+)/,
+    // YouTube Shortened URL: https://youtu.be/VIDEO_ID
+    /youtu\.be\/([^/?]+)/,
+  ]
+
+  for (const pattern of regexPatterns) {
+    const match = url.match(pattern)
+    if (match && match[1]) {
+      return match[1]
+    }
+  }
+
+  return null
+}
+
+/**
+ * Generates a YouTube thumbnail URL from a YouTube video URL
+ * @param videoUrl YouTube video URL
+ * @param quality Thumbnail quality: 'default', 'hqdefault', 'mqdefault', 'sddefault', 'maxresdefault'
+ * @returns YouTube thumbnail URL or fallback image if video ID can't be extracted
+ */
+export function getYouTubeThumbnailUrl(videoUrl: string, quality: 'default' | 'hqdefault' | 'mqdefault' | 'sddefault' | 'maxresdefault' = 'hqdefault'): string {
+  const videoId = extractYouTubeVideoId(videoUrl)
+
+  if (!videoId) {
+    return "/placeholder.svg?height=400&width=600"
+  }
+
+  return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`
+}
+

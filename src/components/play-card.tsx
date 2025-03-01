@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatTimeAgo } from "@/lib/utils"
+import { formatTimeAgo, getYouTubeThumbnailUrl } from "@/lib/utils"
 import { referees } from "@/lib/data"
 
 interface PlayCardProps {
@@ -21,6 +21,7 @@ interface PlayCardProps {
   commentCount: number
   refereeId?: string
   timestamp?: Date
+  videoUrl?: string
 }
 
 export default function PlayCard({
@@ -38,10 +39,14 @@ export default function PlayCard({
   commentCount,
   refereeId,
   timestamp,
+  videoUrl,
 }: PlayCardProps) {
   const totalVotes = yesVotes + noVotes
   const yesPercentage = totalVotes > 0 ? Math.round((yesVotes / totalVotes) * 100) : 50
   const noPercentage = 100 - yesPercentage
+
+  // Get YouTube thumbnail if videoUrl is available
+  const thumbnailUrl = videoUrl ? getYouTubeThumbnailUrl(videoUrl, 'maxresdefault') : thumbnail
 
   const getVerdictText = (verdict: string) => {
     switch (verdict) {
@@ -71,10 +76,10 @@ export default function PlayCard({
 
   return (
     <Link href={`/play/${id}`}>
-      <div className="bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-gray-700 transition duration-300 hover:shadow-lg">
+      <div className="reddit-card card-gradient modern-shadow rounded-lg overflow-hidden border border-[#343536] hover:border-[#4E4E50] transition-all duration-300">
         <div className="relative aspect-video">
           <Image
-            src={thumbnail || "/placeholder.svg"}
+            src={thumbnailUrl || "/placeholder.svg"}
             alt={`${homeTeam} vs ${awayTeam}`}
             fill
             className="object-cover"
@@ -89,7 +94,7 @@ export default function PlayCard({
                   {quarter} • {timeLeft}
                 </p>
               </div>
-              <div className="bg-black/70 px-2 py-1 rounded text-xs">{officialCall}</div>
+              <div className="glass-effect px-2 py-1 rounded text-xs">{officialCall}</div>
             </div>
           </div>
         </div>
@@ -110,9 +115,9 @@ export default function PlayCard({
           </div>
 
           {/* Vote Split Bar */}
-          <div className="h-2 bg-gray-800 rounded-full overflow-hidden mb-4">
-            <div className="h-full bg-nba-blue" style={{ width: `${yesPercentage}%`, float: "left" }}></div>
-            <div className="h-full bg-nba-red" style={{ width: `${noPercentage}%`, float: "left" }}></div>
+          <div className="h-2 bg-[#272729] rounded-full overflow-hidden mb-4">
+            <div className="h-full blue-gradient" style={{ width: `${yesPercentage}%`, float: "left" }}></div>
+            <div className="h-full red-gradient" style={{ width: `${noPercentage}%`, float: "left" }}></div>
           </div>
 
           <div className="flex justify-between items-center">

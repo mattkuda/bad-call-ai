@@ -3,39 +3,80 @@
 @tailwind utilities;
 
 :root {
-  --nba-blue: #2A6AE1;
-  --nba-red: #C9082A;
+  --nba-blue: hwb(219 15% 2%);
+  --nba-blue-dark: #1a4da8;
+  --nba-blue-light: #4c82e6;
+  --nba-red: hwb(349 48% 3%);
+  --nba-red-dark: #a00622;
+  --nba-red-light: #e62a4c;
 }
+
+/* Text gradient that matches the button gradient */
+.text-gradient {
+  background: linear-gradient(135deg, hwb(219 15% 2%) 0%, rgb(93, 147, 247) 50%, hwb(349 48% 3%) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Animated text gradient */
+.text-gradient-animated {
+  background: linear-gradient(135deg, hwb(219 15% 2%) 0%, rgb(93, 147, 247) 50%, hwb(349 48% 3%) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* background: linear-gradient(135deg, 0%, rgb(93, 147, 247) 50%, 100%); */
+
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
+    --background: 220 13% 8%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 3.9%;
+    --card: 220 13% 10%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 3.9%;
+    --popover: 220 13% 9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 221 72% 32%;
+    --primary: 221 72% 52%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 348 89% 41%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 220 13% 15%;
+    --muted-foreground: 220 13% 65%;
 
-    --accent: 240 3.7% 15.9%;
+    --accent: 220 13% 15%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 220 13% 15%;
+    --input: 220 13% 15%;
+    --ring: 221 72% 52%;
   }
 }
 
@@ -83,4 +124,75 @@
 
 .verdict-unclear {
   color: #f59e0b;
+}
+
+/* Modern UI Enhancements */
+.card-gradient {
+  background: linear-gradient(to bottom, hsl(220, 13%, 12%), hsl(220, 13%, 9%));
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+.blue-gradient {
+  background: linear-gradient(135deg, var(--nba-blue), var(--nba-blue-dark));
+}
+
+.red-gradient {
+  background: linear-gradient(135deg, var(--nba-red), var(--nba-red-dark));
+}
+
+.glass-effect {
+  background: rgba(30, 30, 35, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modern-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+}
+
+.glow-blue {
+  box-shadow: 0 0 15px rgba(42, 106, 225, 0.5);
+}
+
+.glow-red {
+  box-shadow: 0 0 15px rgba(201, 8, 42, 0.5);
+}
+
+.subtle-border {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-gradient-to-r from-[var(--nba-blue)] to-[var(--nba-blue-dark)] hover:from-[var(--nba-blue-light)] hover:to-[var(--nba-blue)] text-white font-medium px-4 py-2 rounded-md transition-all duration-200 shadow-lg hover:shadow-xl;
+}
+
+.btn-secondary {
+  @apply bg-gradient-to-r from-[var(--nba-red)] to-[var(--nba-red-dark)] hover:from-[var(--nba-red-light)] hover:to-[var(--nba-red)] text-white font-medium px-4 py-2 rounded-md transition-all duration-200 shadow-lg hover:shadow-xl;
+}
+
+/* Reddit-inspired card styling */
+.reddit-card {
+  @apply bg-[#1A1A1B] border border-[#343536] rounded-md p-4 hover:border-[#4E4E50] transition-all duration-200;
+}
+
+/* New button style with gradient from blue to light blue to light red */
+.btn-new {
+  @apply text-white font-medium px-4 py-2 rounded-md transition-all duration-200;
+  background: linear-gradient(135deg, hwb(219 15% 2%) 0%, rgb(93, 147, 247) 50%, hwb(349 48% 3%) 100%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.btn-new:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }

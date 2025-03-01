@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { plays, referees } from "@/lib/data"
+import { hardCodedPlays, referees } from "@/lib/data"
 import PlayCard from "@/components/play-card"
 
 interface RefereePageProps {
@@ -15,7 +15,7 @@ export default function RefereePage({ params }: RefereePageProps) {
     return <div className="text-center py-12">Referee not found</div>
   }
 
-  const refereePlays = plays.filter((play) => play.refereeId === params.id)
+  const refereePlays = hardCodedPlays.filter((play) => play.refereeId === params.id)
   const accuracyPercentage = Math.round((referee.correctCalls / referee.totalReviewedCalls) * 100)
 
   return (
@@ -24,7 +24,7 @@ export default function RefereePage({ params }: RefereePageProps) {
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="relative h-32 w-32 rounded-full overflow-hidden">
-            <Image src={referee.avatar || "/placeholder.svg"} alt={referee.name} fill className="object-cover" />
+            <Image src={referee.imageUrl || "/placeholder.svg"} alt={referee.name} fill className="object-cover" />
           </div>
           <div className="flex-grow text-center md:text-left">
             <h1 className="text-3xl font-bold mb-2">{referee.name}</h1>
@@ -55,7 +55,24 @@ export default function RefereePage({ params }: RefereePageProps) {
       <h2 className="text-2xl font-bold mb-6">Recent Reviewed Plays</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {refereePlays.map((play) => (
-          <PlayCard key={play.id} {...play} />
+          <PlayCard
+            key={play.id}
+            id={play.id}
+            thumbnail={play.thumbnail}
+            homeTeam={play.homeTeam}
+            awayTeam={play.awayTeam}
+            quarter={play.quarter}
+            timeLeft={play.timeLeft}
+            officialCall={play.officialCall}
+            aiVerdict={play.aiVerdict as "correct" | "incorrect" | "unclear"}
+            confidenceScore={play.confidenceScore}
+            yesVotes={play.yesVotes}
+            noVotes={play.noVotes}
+            commentCount={play.commentCount}
+            refereeId={play.refereeId}
+            timestamp={play.timestamp}
+            videoUrl={play.videoUrl}
+          />
         ))}
       </div>
     </div>

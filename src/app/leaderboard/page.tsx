@@ -33,7 +33,7 @@ export default function LeaderboardPage() {
               <div className="flex items-center gap-4">
                 <div className="flex-shrink-0">
                   <div className="relative h-16 w-16 rounded-full overflow-hidden">
-                    <Image src={ref.avatar || "/placeholder.svg"} alt={ref.name} fill className="object-cover" />
+                    <Image src={ref.imageUrl || "/placeholder.svg"} alt={ref.name} fill className="object-cover" />
                   </div>
                 </div>
                 <div className="flex-grow">

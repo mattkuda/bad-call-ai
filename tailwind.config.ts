@@ -51,8 +51,8 @@ const config: Config = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
-                "nba-blue": "#2A6AE1",
-                "nba-red": "#C9082A",
+                "nba-blue": "hwb(219 15% 2%)",
+                "nba-red": "hwb(349 48% 3%)",
             },
             borderRadius: {
                 lg: "var(--radius)",

@@ -18,27 +18,27 @@ interface Game {
 const recentGames: Game[] = [
   {
     id: "1",
-    homeTeam: "Lakers",
-    awayTeam: "Celtics",
+    homeTeam: "Warriors",
+    awayTeam: "Rockets",
     date: "Nov 10, 2024",
-    homeTeamLogo: "/placeholder.svg?height=100&width=100",
-    awayTeamLogo: "/placeholder.svg?height=100&width=100",
+    homeTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/gs.png&h=200&w=200",
+    awayTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/hou.png&h=200&w=200",
   },
   {
     id: "2",
     homeTeam: "Bucks",
     awayTeam: "Heat",
     date: "Nov 9, 2024",
-    homeTeamLogo: "/placeholder.svg?height=100&width=100",
-    awayTeamLogo: "/placeholder.svg?height=100&width=100",
+    homeTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/mil.png&h=200&w=200",
+    awayTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/mia.png&h=200&w=200",
   },
   {
     id: "3",
-    homeTeam: "Warriors",
-    awayTeam: "Knicks",
+    homeTeam: "Lakers",
+    awayTeam: "Celtics",
     date: "Nov 8, 2024",
-    homeTeamLogo: "/placeholder.svg?height=100&width=100",
-    awayTeamLogo: "/placeholder.svg?height=100&width=100",
+    homeTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/lal.png&h=200&w=200",
+    awayTeamLogo: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/bos.png&h=200&w=200",
   },
 ]
 
@@ -81,7 +81,7 @@ export default function SelectGame({ onSelect }: SelectGameProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             onClick={() => onSelect(game.id)}
-            className="bg-gray-900 border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition cursor-pointer"
+            className="bg-[#1A1A1B] border border-gray-800 rounded-lg p-4 hover:border-gray-700 transition cursor-pointer"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">

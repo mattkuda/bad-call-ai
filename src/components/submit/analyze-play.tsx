@@ -1,32 +1,72 @@
 "use client"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import ProcessingScreen from "./processing-screen"
 
 interface AnalyzePlayProps {
     playId: string
     videoFile: File
     officialCall: string
+    aiContext: string
 }
 
-interface AnalysisResult {
-    verdict: 'CORRECT_CALL' | 'INCORRECT_CALL' | 'UNCLEAR'
+// interface AnalysisResult {
+//     verdict: 'CORRECT_CALL' | 'INCORRECT_CALL' | 'UNCLEAR'
+//     confidenceScore: number
+//     explanation: string
+//     ruleReference?: string
+//     keyFrameIndex: number
+//     frames: Array<{
+//         base64: string
+//         index: number
+//         isKeyFrame: boolean
+//     }>
+//     audioNarration: string
+// }
+
+// Add Play interface to match the one in data.ts
+interface PlayComment {
+    id: string
+    user: string
+    avatar: string
+    text: string
+    likes: number
+    timestamp: string
+}
+
+interface Play {
+    id: string
+    thumbnail: string
+    homeTeam: string
+    awayTeam: string
+    quarter: string
+    timeLeft: string
+    officialCall: string
+    aiVerdict: "correct" | "incorrect" | "unclear"
     confidenceScore: number
-    explanation: string
-    ruleReference?: string
-    keyFrameIndex: number
-    frames: Array<{
+    yesVotes: number
+    noVotes: number
+    commentCount: number
+    description: string
+    videoUrl: string
+    aiExplanation: string
+    ruleReference: string
+    comments: PlayComment[]
+    refereeId?: string
+    timestamp?: Date | string
+    // Add the analysis-specific fields
+    frames?: Array<{
         base64: string
         index: number
         isKeyFrame: boolean
     }>
-    audioNarration: string
+    keyFrameIndex?: number
+    audioNarration?: string
 }
 
-export function AnalyzePlay({ playId, videoFile, officialCall }: AnalyzePlayProps) {
+export function AnalyzePlay({ playId, videoFile, officialCall, aiContext }: AnalyzePlayProps) {
     const [analysisState, setAnalysisState] = useState<'uploading' | 'analyzing' | 'complete' | 'error'>('uploading')
-    const [result, setResult] = useState<AnalysisResult | null>(null)
     const router = useRouter()
 
     useEffect(() => {
@@ -38,6 +78,7 @@ export function AnalyzePlay({ playId, videoFile, officialCall }: AnalyzePlayProp
                 const formData = new FormData()
                 formData.append('video', videoFile)
                 formData.append('playId', playId)
+                formData.append('aiContext', aiContext)
                 formData.append('officialCall', officialCall)
 
                 // Call the API endpoint
@@ -52,16 +93,74 @@ export function AnalyzePlay({ playId, videoFile, officialCall }: AnalyzePlayProp
 
                 setAnalysisState('analyzing')
 
-                const data = await response.json()
-                setResult(data)
+                const data = await response.json();
+                console.log("!!!!!!!!!!!!!!!!!")
+                console.log("In analyze play: data from the API")
+                console.log(data)
+                console.log("!!!!!!!!!!!!!!!!!")
                 setAnalysisState('complete')
 
-                // Store the result in localStorage for the play page to access
-                localStorage.setItem(`analysis-${playId}`, JSON.stringify(data))
+                // Create a complete Play object with all required fields
+                const completePlayData: Play = {
+                    id: "recent",
+                    confidenceScore: data.confidenceScore,
+                    aiExplanation: data.explanation,
+                    ruleReference: data.ruleReference || "",
+                    timestamp: new Date().toISOString(),
+                    frames: data.frames,
+                    keyFrameIndex: data.keyFrameIndex,
+                    audioNarration: data.audioNarration,
+                    thumbnail: "/placeholder.svg?height=400&width=600",
+                    homeTeam: "Warriors",
+                    awayTeam: "Rockets",
+                    quarter: "Q4",
+                    timeLeft: "0:12",
+                    officialCall: "Kevin Durant was NOT out of bounds while saving the ball.",
+                    aiVerdict: data.verdict === 'CORRECT_CALL'
+                        ? 'correct'
+                        : data.verdict === 'INCORRECT_CALL'
+                            ? 'incorrect'
+                            : 'unclear',
+                    yesVotes: 1245,
+                    noVotes: 5678,
+                    commentCount: 342,
+                    description:
+                        "Kevin Durant saves the ball from going out of bounds on the baseline, resulting in a clutch 3 pointer for the Warriors.",
+                    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    comments: [
+                        {
+                            id: "c1",
+                            user: "BasketballFan23",
+                            avatar: "/placeholder.svg?height=40&width=40",
+                            text: "Terrible call! Tatum was clearly set outside the restricted area.",
+                            likes: 89,
+                            timestamp: "2h ago",
+                        },
+                        {
+                            id: "c2",
+                            user: "LakersNation",
+                            avatar: "/placeholder.svg?height=40&width=40",
+                            text: "Nah, Tatum was still moving. Good call by the ref!",
+                            likes: 45,
+                            timestamp: "1h ago",
+                        },
+                        {
+                            id: "c3",
+                            user: "RefExpert",
+                            avatar: "/placeholder.svg?height=40&width=40",
+                            text: "Looking at the replay, his right foot was still sliding when contact was made. It's a close call but I think the ref got it right.",
+                            likes: 67,
+                            timestamp: "45m ago",
+                        },
+                    ],
+                };
+
+                // Store the complete Play object in localStorage
+                localStorage.setItem(`analysis-recent`, JSON.stringify(completePlayData))
 
                 // Redirect to the play page after analysis is complete
                 setTimeout(() => {
-                    router.push(`/play/${playId}`)
+                    router.push(`/play/recent`)
                 }, 2000)
             } catch (error) {
                 console.error('Analysis error:', error)
@@ -80,41 +179,9 @@ export function AnalyzePlay({ playId, videoFile, officialCall }: AnalyzePlayProp
             animate={{ opacity: 1, y: 0 }}
             className="space-y-6"
         >
-            {analysisState !== 'complete' && (
-                <div className="flex flex-col items-center justify-center min-h-[300px] gap-4">
-                    <Loader2 className="h-8 w-8 animate-spin text-nba-blue" />
-                    <p className="text-lg font-semibold">
-                        {analysisState === 'uploading' ? 'Uploading video...' : 'AI is analyzing the play...'}
-                    </p>
-                </div>
+            {analysisState !== 'complete' && analysisState !== 'error' && (
+                <ProcessingScreen />
             )}
-
-            {analysisState === 'complete' && result && (
-                <div className="space-y-6">
-                    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-                        <h2 className="text-2xl font-bold mb-4">AI Verdict</h2>
-                        <div className={`text-xl font-bold mb-2 ${result.verdict === 'CORRECT_CALL' ? 'text-green-500' :
-                            result.verdict === 'INCORRECT_CALL' ? 'text-red-500' : 'text-yellow-500'
-                            }`}>
-                            {result.verdict.replace('_', ' ')}
-                        </div>
-                        <div className="text-sm text-gray-400 mb-4">
-                            Confidence: {result.confidenceScore}%
-                        </div>
-                        <p className="text-gray-200">{result.explanation}</p>
-                        {result.ruleReference && (
-                            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-                                <h3 className="text-sm font-semibold mb-1">Rule Reference:</h3>
-                                <p className="text-sm text-gray-300">{result.ruleReference}</p>
-                            </div>
-                        )}
-                        <div className="mt-4 text-sm text-gray-400">
-                            Redirecting to play page...
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {analysisState === 'error' && (
                 <div className="text-center text-red-500">
                     An error occurred while analyzing the play. Please try again.

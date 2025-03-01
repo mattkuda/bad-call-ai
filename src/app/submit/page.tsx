@@ -12,14 +12,15 @@ export default function SubmitPage() {
   const [selectedPlay, setSelectedPlay] = useState<string | null>(null)
   const [videoFile, setVideoFile] = useState<File | null>(null)
   const [officialCall, setOfficialCall] = useState<string>("")
-
+  const [aiContext, setAiContext] = useState<string>("")
   const handleGameSelect = (gameId: string) => {
     setSelectedGame(gameId)
     setStep(2)
   }
 
-  const handlePlaySelect = (playId: string, video: File, call: string) => {
+  const handlePlaySelect = (playId: string, video: File, call: string, context: string) => {
     setSelectedPlay(playId)
+    setAiContext(context)
     setVideoFile(video)
     setOfficialCall(call)
     setStep(3)
@@ -61,6 +62,7 @@ export default function SubmitPage() {
               playId={selectedPlay}
               videoFile={videoFile}
               officialCall={officialCall}
+              aiContext={aiContext}
             />
           </motion.div>
         )}

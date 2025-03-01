@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 interface Play {
   id: string
   description: string
+  aiContext?: string
   officialCall: string
   timestamp: string
 }
@@ -16,9 +17,10 @@ const recentPlays: Record<string, Play[]> = {
   "1": [
     {
       id: "play1",
-      description: "LeBron James driving layup",
-      officialCall: "Blocking foul called",
-      timestamp: "3rd Quarter, 2:32 Remaining",
+      description: "Kevin Durant saves ball from out of bounds",
+      aiContext: "Kevin Durant is attempting to save the ball from going out of bounds on the baseline. Attached is a slow motion of the play.",
+      officialCall: "Kevin Durant was NOT out of bounds while saving the ball.",
+      timestamp: "4th Quarter, 0:32 Remaining",
     },
     {
       id: "play2",
@@ -37,7 +39,7 @@ const recentPlays: Record<string, Play[]> = {
 
 interface SelectPlayProps {
   gameId: string
-  onSelect: (playId: string, videoFile: File, officialCall: string) => void
+  onSelect: (playId: string, videoFile: File, officialCall: string, aiContext: string) => void
 }
 
 export default function SelectPlay({ gameId, onSelect }: SelectPlayProps) {
@@ -56,7 +58,7 @@ export default function SelectPlay({ gameId, onSelect }: SelectPlayProps) {
       if (selectedPlay) {
         setIsUploading(true)
         // Skip the API call here and let AnalyzePlay handle it
-        onSelect(selectedPlayId, videoFile, selectedPlay.officialCall)
+        onSelect(selectedPlayId, videoFile, selectedPlay.officialCall, selectedPlay?.aiContext || "")
       }
     }
   }
@@ -75,7 +77,7 @@ export default function SelectPlay({ gameId, onSelect }: SelectPlayProps) {
           <p className="text-gray-400">Upload an MP4 video of the selected play for AI analysis.</p>
         </div>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+        <div className="bg-[#1A1A1B] border border-gray-800 rounded-lg p-6">
           <div className="mb-4">
             <h3 className="font-semibold">{selectedPlay?.description}</h3>
             <p className="text-sm text-gray-400">{selectedPlay?.timestamp}</p>
@@ -111,7 +113,7 @@ export default function SelectPlay({ gameId, onSelect }: SelectPlayProps) {
               </Button>
               <Button
                 variant="default"
-                className="w-full"
+                className="w-full btn-new"
                 disabled={!videoFile || isUploading}
                 onClick={handleVideoSubmit}
               >
@@ -138,14 +140,14 @@ export default function SelectPlay({ gameId, onSelect }: SelectPlayProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-gray-900 border border-gray-800 rounded-lg p-4"
+            className="bg-[#1A1A1B] border border-gray-800 rounded-lg p-4"
           >
             <div className="flex justify-between items-start mb-2">
               <div>
                 <h3 className="font-semibold">{play.description}</h3>
                 <p className="text-sm text-gray-400">{play.timestamp}</p>
               </div>
-              <Button onClick={() => handlePlaySelect(play.id)}>Select</Button>
+              <Button className="btn-new" onClick={() => handlePlaySelect(play.id)}>Select</Button>
             </div>
             <div className="inline-block bg-gray-800 px-3 py-1 rounded-full text-sm">
               Official Call: {play.officialCall}

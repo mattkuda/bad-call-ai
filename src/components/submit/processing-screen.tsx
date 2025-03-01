@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Scale } from "lucide-react"
+import Image from "next/image"
 
 const analysisSteps = [
   "Reviewing play footage...",
@@ -40,7 +40,7 @@ export default function ProcessingScreen() {
         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
         className="mb-8"
       >
-        <Scale className="h-16 w-16 text-nba-blue" />
+        <Image src="/BlueLogo.png" alt="Bad Call AI" width={256} height={256} className="object-contain" />
       </motion.div>
 
       <h2 className="text-2xl font-bold mb-4">Analyzing Play...</h2>
