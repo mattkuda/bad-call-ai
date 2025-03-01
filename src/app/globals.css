@@ -182,6 +182,7 @@
 /* Reddit-inspired card styling */
 .reddit-card {
   @apply bg-[#1A1A1B] border border-[#343536] rounded-md p-4 hover:border-[#4E4E50] transition-all duration-200;
+  border-radius: 10px;
 }
 
 /* New button style with gradient from blue to light blue to light red */

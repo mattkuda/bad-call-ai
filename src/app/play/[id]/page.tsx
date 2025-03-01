@@ -81,6 +81,13 @@ export default function PlayPage() {
   const [isClient, setIsClient] = useState(false)
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0)
 
+  // New state variables for demo functionality
+  const [goodVotes, setGoodVotes] = useState(0)
+  const [badVotes, setbadVotes] = useState(0)
+  const [newComment, setNewComment] = useState("")
+  const [demoComments, setDemoComments] = useState<PlayComment[]>([])
+  const [feedbackGiven, setFeedbackGiven] = useState(false)
+
   // Only find a play from the mock data if we're not looking at a recent analysis
   const hardCodedPlay = id !== "recent" ? hardCodedPlays.find((p) => p.id === id) : null
   const isRecentAnalysis = id === "recent"
@@ -189,8 +196,11 @@ export default function PlayPage() {
     })
     : hardCodedPlay!;
 
-  const totalVotes = playData.yesVotes + playData.noVotes
-  const yesPercentage = totalVotes > 0 ? Math.round((playData.yesVotes / totalVotes) * 100) : 50
+  // Calculate total votes including demo votes
+  const totalVotes = playData.yesVotes + playData.noVotes + goodVotes + badVotes
+  const yesPercentage = totalVotes > 0
+    ? Math.round(((playData.yesVotes + goodVotes) / totalVotes) * 100)
+    : 50
   const noPercentage = 100 - yesPercentage
 
   // Use the appropriate data source for verdict, confidence, explanation, etc.
@@ -198,6 +208,37 @@ export default function PlayPage() {
   const confidenceScore = playData.confidenceScore
   const aiExplanation = playData.aiExplanation
   const ruleReference = playData.ruleReference
+
+  // Handler functions for demo functionality
+  const handleGoodVote = () => {
+    setGoodVotes(prev => prev + 1)
+    setFeedbackGiven(true)
+  }
+
+  const handleBadVote = () => {
+    setbadVotes(prev => prev + 1)
+    setFeedbackGiven(true)
+  }
+
+  const handleCommentSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newComment.trim()) return
+
+    const newCommentObj: PlayComment = {
+      id: `demo-${Date.now()}`,
+      user: "You",
+      avatar: "/placeholder.svg",
+      text: newComment,
+      likes: 0,
+      timestamp: "Just now"
+    }
+
+    setDemoComments(prev => [newCommentObj, ...prev])
+    setNewComment("")
+  }
+
+  // Combine original comments with demo comments
+  const allComments = [...demoComments, ...(playData.comments || [])]
 
   const getVerdictText = (verdict: string) => {
     if (!verdict) return "";
@@ -437,15 +478,28 @@ export default function PlayPage() {
                 <>
                   <h3 className="font-semibold mb-2">Your Feedback:</h3>
                   <div className="flex space-x-2 mb-6">
-                    <Button variant="outline" className="flex-1 flex items-center justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex-1 flex items-center justify-center gap-2"
+                      onClick={handleGoodVote}
+                      disabled={feedbackGiven}
+                    >
                       <ThumbsUp className="h-4 w-4" />
-                      Good Analysis
+                      Good Analysis {goodVotes > 0 && `(${goodVotes})`}
                     </Button>
-                    <Button variant="outline" className="flex-1 flex items-center justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex-1 flex items-center justify-center gap-2"
+                      onClick={handleBadVote}
+                      disabled={feedbackGiven}
+                    >
                       <ThumbsDown className="h-4 w-4" />
-                      Poor Analysis
+                      Poor Analysis {badVotes > 0 && `(${badVotes})`}
                     </Button>
                   </div>
+                  {feedbackGiven && (
+                    <p className="text-sm text-green-500 text-center mb-4">Thanks for your feedback!</p>
+                  )}
                 </>
               ) : (
                 <>
@@ -464,13 +518,21 @@ export default function PlayPage() {
                   </div>
 
                   <div className="flex space-x-2 mb-6">
-                    <Button variant="outline" className="flex-1 flex items-center justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex-1 flex items-center justify-center gap-2"
+                      onClick={handleGoodVote}
+                    >
                       <ThumbsUp className="h-4 w-4" />
-                      Good Call
+                      Good Call {goodVotes > 0 && `(+${goodVotes})`}
                     </Button>
-                    <Button variant="outline" className="flex-1 flex items-center justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex-1 flex items-center justify-center gap-2"
+                      onClick={handleBadVote}
+                    >
                       <ThumbsDown className="h-4 w-4" />
-                      Bad Call
+                      Bad Call {badVotes > 0 && `(+${badVotes})`}
                     </Button>
                   </div>
                 </>
@@ -479,15 +541,42 @@ export default function PlayPage() {
               <div className="border-t border-gray-800 pt-4">
                 <h3 className="font-semibold mb-3 flex items-center">
                   <MessageSquare className="h-4 w-4 mr-2" />
-                  {isRecentAnalysis ? 'Comments' : `Comments (${playData.comments.length})`}
+                  {isRecentAnalysis ? 'Comments' : `Comments (${allComments.length})`}
                 </h3>
-                {isRecentAnalysis ? (
+
+                {/* Comment form */}
+                <form onSubmit={handleCommentSubmit} className="mb-4">
+                  <div className="flex space-x-2">
+                    <div className="flex-shrink-0">
+                      <div className="relative h-8 w-8 rounded-full overflow-hidden bg-gray-700">
+                        <Image
+                          src="/placeholder.svg"
+                          alt="Your avatar"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Add a comment..."
+                        className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <Button type="submit" size="sm" variant="outline">Post</Button>
+                  </div>
+                </form>
+
+                {isRecentAnalysis && demoComments.length === 0 ? (
                   <div className="bg-gray-800 rounded-lg p-4 text-center text-gray-400">
-                    <p>Comments are disabled for recent analyses</p>
+                    <p>No comments yet. Be the first to comment!</p>
                   </div>
                 ) : (
                   <div className="space-y-4 max-h-80 overflow-y-auto pr-2">
-                    {playData.comments.map((comment) => (
+                    {allComments.map((comment) => (
                       <div key={comment.id} className="flex space-x-3">
                         <div className="flex-shrink-0">
                           <div className="relative h-8 w-8 rounded-full overflow-hidden">
