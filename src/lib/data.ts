@@ -30,7 +30,7 @@ interface Play {
 export const hardCodedPlays: Play[] = [
   {
     id: "1",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Lakers",
     awayTeam: "Celtics",
     quarter: "Q4",
@@ -52,7 +52,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c1",
         user: "BasketballFan23",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Terrible call! Tatum was clearly set outside the restricted area.",
         likes: 89,
         timestamp: "2h ago",
@@ -60,7 +60,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c2",
         user: "LakersNation",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Nah, Tatum was still moving. Good call by the ref!",
         likes: 45,
         timestamp: "1h ago",
@@ -68,7 +68,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c3",
         user: "RefExpert",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Looking at the replay, his right foot was still sliding when contact was made. It's a close call but I think the ref got it right.",
         likes: 67,
         timestamp: "45m ago",
@@ -77,7 +77,7 @@ export const hardCodedPlays: Play[] = [
   },
   {
     id: "2",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Heat",
     awayTeam: "Spurs",
     quarter: "Q4",
@@ -98,7 +98,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c4",
         user: "WarriorsGSW",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Booker always gets these soft calls. Barely any contact!",
         likes: 34,
         timestamp: "3h ago",
@@ -106,7 +106,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c5",
         user: "PhoenixRising",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Clear foul, Green hit his elbow during the shot.",
         likes: 78,
         timestamp: "2h ago",
@@ -115,7 +115,7 @@ export const hardCodedPlays: Play[] = [
   },
   {
     id: "3",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Rockets",
     awayTeam: "Blazers",
     quarter: "Q1",
@@ -136,7 +136,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c6",
         user: "TrustTheProcess",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "His heel was clearly above the line! Terrible call in a crucial moment.",
         likes: 112,
         timestamp: "5h ago",
@@ -144,7 +144,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c7",
         user: "BucksInSix",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "The side angle shows his foot was on the line. Good call.",
         likes: 95,
         timestamp: "4h ago",
@@ -153,7 +153,7 @@ export const hardCodedPlays: Play[] = [
   },
   {
     id: "4",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Vikings",
     awayTeam: "Saints",
     quarter: "Q2",
@@ -174,7 +174,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c8",
         user: "MavsNation",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Refs always calling travels on Luka's step-backs when they're perfectly legal!",
         likes: 156,
         timestamp: "7h ago",
@@ -182,7 +182,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c9",
         user: "NuggLife",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "He took 3 steps after the gather, clear travel.",
         likes: 89,
         timestamp: "6h ago",
@@ -191,7 +191,7 @@ export const hardCodedPlays: Play[] = [
   },
   {
     id: "5",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Celtics",
     awayTeam: "Mavericks",
     quarter: "Q2",
@@ -212,7 +212,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c10",
         user: "HeatCulture",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "That's a tough call, but I can see why they called it. Jimmy does extend that arm a lot.",
         likes: 1,
         timestamp: "2h ago",
@@ -220,7 +220,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c11",
         user: "KnicksForever",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Finally the refs call Butler for that push-off! He does it every drive.",
         likes: 124,
         timestamp: "1h ago",
@@ -229,7 +229,7 @@ export const hardCodedPlays: Play[] = [
   },
   {
     id: "6",
-    thumbnail: "/placeholder.svg?height=400&width=600",
+    thumbnail: "/placeholder.png?height=400&width=600",
     homeTeam: "Rockets",
     awayTeam: "Spurs",
     quarter: "Q2",
@@ -250,7 +250,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c12",
         user: "HeatCulture",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "That's a tough call, but I can see why they called it. Jimmy does extend that arm a lot.",
         likes: 1,
         timestamp: "2h ago",
@@ -258,7 +258,7 @@ export const hardCodedPlays: Play[] = [
       {
         id: "c13",
         user: "KnicksForever",
-        avatar: "/placeholder.svg?height=40&width=40",
+        avatar: "/placeholder.png?height=40&width=40",
         text: "Finally the refs call Butler for that push-off! He does it every drive.",
         likes: 124,
         timestamp: "1h ago",

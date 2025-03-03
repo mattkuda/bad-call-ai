@@ -110,10 +110,11 @@ export function AnalyzePlay({ playId, videoFile, officialCall, aiContext }: Anal
                     frames: data.frames,
                     keyFrameIndex: data.keyFrameIndex,
                     audioNarration: data.audioNarration,
-                    thumbnail: "/placeholder.svg?height=400&width=600",
+                    thumbnail: "/placeholder.png?height=400&width=600",
                     homeTeam: "Warriors",
                     awayTeam: "Rockets",
                     quarter: "Q4",
+                    refereeId: "1",
                     timeLeft: "0:12",
                     officialCall: "Kevin Durant was NOT out of bounds while saving the ball.",
                     aiVerdict: data.verdict === 'CORRECT_CALL'
@@ -127,32 +128,32 @@ export function AnalyzePlay({ playId, videoFile, officialCall, aiContext }: Anal
                     description:
                         "Kevin Durant saves the ball from going out of bounds on the baseline, resulting in a clutch 3 pointer for the Warriors.",
                     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                    comments: [
-                        {
-                            id: "c1",
-                            user: "BasketballFan23",
-                            avatar: "/placeholder.svg?height=40&width=40",
-                            text: "Terrible call! Tatum was clearly set outside the restricted area.",
-                            likes: 89,
-                            timestamp: "2h ago",
-                        },
-                        {
-                            id: "c2",
-                            user: "LakersNation",
-                            avatar: "/placeholder.svg?height=40&width=40",
-                            text: "Nah, Tatum was still moving. Good call by the ref!",
-                            likes: 45,
-                            timestamp: "1h ago",
-                        },
-                        {
-                            id: "c3",
-                            user: "RefExpert",
-                            avatar: "/placeholder.svg?height=40&width=40",
-                            text: "Looking at the replay, his right foot was still sliding when contact was made. It's a close call but I think the ref got it right.",
-                            likes: 67,
-                            timestamp: "45m ago",
-                        },
-                    ],
+                    comments: [],
+                    //     {
+                    //         id: "c1",
+                    //         user: "BasketballFan23",
+                    //         avatar: "/placeholder.png?height=40&width=40",
+                    //         text: "Terrible call! Tatum was clearly set outside the restricted area.",
+                    //         likes: 89,
+                    //         timestamp: "2h ago",
+                    //     },
+                    //     {
+                    //         id: "c2",
+                    //         user: "LakersNation",
+                    //         avatar: "/placeholder.png?height=40&width=40",
+                    //         text: "Nah, Tatum was still moving. Good call by the ref!",
+                    //         likes: 45,
+                    //         timestamp: "1h ago",
+                    //     },
+                    //     {
+                    //         id: "c3",
+                    //         user: "RefExpert",
+                    //         avatar: "/placeholder.png?height=40&width=40",
+                    //         text: "Looking at the replay, his right foot was still sliding when contact was made. It's a close call but I think the ref got it right.",
+                    //         likes: 67,
+                    //         timestamp: "45m ago",
+                    //     },
+                    // ],
                 };
 
                 // Store the complete Play object in localStorage

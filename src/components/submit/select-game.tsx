@@ -88,7 +88,7 @@ export default function SelectGame({ onSelect }: SelectGameProps) {
                 <div className="flex items-center gap-2">
                   <div className="relative h-10 w-10">
                     <Image
-                      src={game.homeTeamLogo || "/placeholder.svg"}
+                      src={game.homeTeamLogo || "/placeholder.png"}
                       alt={game.homeTeam}
                       fill
                       className="object-contain"
@@ -100,7 +100,7 @@ export default function SelectGame({ onSelect }: SelectGameProps) {
                 <div className="flex items-center gap-2">
                   <div className="relative h-10 w-10">
                     <Image
-                      src={game.awayTeamLogo || "/placeholder.svg"}
+                      src={game.awayTeamLogo || "/placeholder.png"}
                       alt={game.awayTeam}
                       fill
                       className="object-contain"

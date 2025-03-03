@@ -24,7 +24,7 @@ export default function RefereePage({ params }: RefereePageProps) {
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 mb-8">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="relative h-32 w-32 rounded-full overflow-hidden">
-            <Image src={referee.imageUrl || "/placeholder.svg"} alt={referee.name} fill className="object-cover" />
+            <Image src={referee.imageUrl || "/placeholder.png"} alt={referee.name} fill className="object-cover" />
           </div>
           <div className="flex-grow text-center md:text-left">
             <h1 className="text-3xl font-bold mb-2">{referee.name}</h1>

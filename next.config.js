@@ -7,6 +7,15 @@ const nextConfig = {
             'a.espncdn.com', // For NBA team logos
         ],
     },
+    reactStrictMode: true,
+    webpack: (config, { dev, isServer }) => {
+        // Only apply in development mode
+        if (dev && !isServer) {
+            // Suppress client-side error overlays
+            config.devtool = 'eval-source-map';
+        }
+        return config;
+    },
 }
 
 module.exports = nextConfig 

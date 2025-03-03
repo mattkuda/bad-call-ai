@@ -57,7 +57,7 @@ export function getYouTubeThumbnailUrl(videoUrl: string, quality: 'default' | 'h
   const videoId = extractYouTubeVideoId(videoUrl)
 
   if (!videoId) {
-    return "/placeholder.svg?height=400&width=600"
+    return "/placeholder.png?height=400&width=600"
   }
 
   return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`

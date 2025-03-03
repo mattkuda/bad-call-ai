@@ -4,6 +4,8 @@ import "@/app/globals.css";
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Roboto } from "next/font/google"
+import { AnimationProvider } from "@/lib/animation-context"
+import BouncingBasketball from "@/components/bouncing-basketball"
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"] })
 
@@ -20,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} bg-[#0D0D0F] text-gray-100 min-h-screen flex flex-col`}>
-        <Header />
-        <main className="flex-grow container mx-auto px-4 py-6">{children}</main>
-        <Footer />
+        <AnimationProvider>
+          <Header />
+          <BouncingBasketball />
+          <main className="flex-grow container mx-auto px-4 py-6">{children}</main>
+          <Footer />
+        </AnimationProvider>
       </body>
     </html>
   )

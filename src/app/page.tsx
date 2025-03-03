@@ -26,25 +26,24 @@ export default function Home() {
       {/* Play Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {hardCodedPlays.map((play) => (
-          <div key={play.id} className="card-hover">
-            <PlayCard
-              id={play.id}
-              thumbnail={play.thumbnail}
-              homeTeam={play.homeTeam}
-              awayTeam={play.awayTeam}
-              quarter={play.quarter}
-              timeLeft={play.timeLeft}
-              officialCall={play.officialCall}
-              aiVerdict={play.aiVerdict as "correct" | "incorrect" | "unclear"}
-              confidenceScore={play.confidenceScore}
-              yesVotes={play.yesVotes}
-              noVotes={play.noVotes}
-              commentCount={play.commentCount}
-              refereeId={play.refereeId}
-              timestamp={play.timestamp}
-              videoUrl={play.videoUrl}
-            />
-          </div>
+          <PlayCard
+            key={play.id}
+            id={play.id}
+            thumbnail={play.thumbnail}
+            homeTeam={play.homeTeam}
+            awayTeam={play.awayTeam}
+            quarter={play.quarter}
+            timeLeft={play.timeLeft}
+            officialCall={play.officialCall}
+            aiVerdict={play.aiVerdict as "correct" | "incorrect" | "unclear"}
+            confidenceScore={play.confidenceScore}
+            yesVotes={play.yesVotes}
+            noVotes={play.noVotes}
+            commentCount={play.commentCount}
+            refereeId={play.refereeId}
+            timestamp={play.timestamp}
+            videoUrl={play.videoUrl}
+          />
         ))}
       </div>
     </div>

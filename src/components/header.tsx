@@ -2,13 +2,17 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, Menu, X, User, Send, Type } from "lucide-react"
+import { Search, Menu, X, User, Send, Type, CircleDashed } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { NewButton } from "@/components/ui/new-button"
+import { Switch } from "@/components/ui/switch"
+import { useAnimation } from "@/lib/animation-context"
 import Image from "next/image"
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { isBasketballAnimationEnabled, toggleBasketballAnimation } = useAnimation()
 
   return (
     <header className="bg-[#1A1A1B] border-b border-[#343536] sticky top-0 z-50 modern-shadow">
@@ -53,8 +57,18 @@ export default function Header() {
             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           </div>
 
-          {/* User Profile & Mobile Menu Button */}
+          {/* User Profile, Animation Toggle & Mobile Menu Button */}
           <div className="flex items-center space-x-4">
+            {/* Basketball Animation Toggle */}
+            <div className="hidden md:flex items-center space-x-2">
+              <CircleDashed className={`h-5 w-5 ${isBasketballAnimationEnabled ? 'text-orange-500' : 'text-gray-400'}`} />
+              <Switch
+                checked={isBasketballAnimationEnabled}
+                onCheckedChange={toggleBasketballAnimation}
+                className="data-[state=checked]:bg-orange-500"
+              />
+            </div>
+
             <Button variant="ghost" size="icon" className="rounded-full hidden md:flex hover:bg-[#272729]">
               <User className="h-5 w-5" />
             </Button>
@@ -74,6 +88,19 @@ export default function Header() {
               </Button>
             </div>
             <nav className="flex flex-col space-y-3">
+              {/* Basketball Animation Toggle for Mobile */}
+              <div className="flex items-center justify-between px-2 py-1">
+                <span className="text-gray-400 flex items-center gap-2">
+                  <CircleDashed className="h-4 w-4" />
+                  Basketball Animation
+                </span>
+                <Switch
+                  checked={isBasketballAnimationEnabled}
+                  onCheckedChange={toggleBasketballAnimation}
+                  className="data-[state=checked]:bg-orange-500"
+                />
+              </div>
+
               <Link
                 href="/"
                 className="text-white hover:text-nba-blue transition px-2 py-1"

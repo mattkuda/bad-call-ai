@@ -227,7 +227,7 @@ export default function PlayPage() {
     const newCommentObj: PlayComment = {
       id: `demo-${Date.now()}`,
       user: "You",
-      avatar: "/placeholder.svg",
+      avatar: "/placeholder.png",
       text: newComment,
       likes: 0,
       timestamp: "Just now"
@@ -361,7 +361,7 @@ export default function PlayPage() {
                       >
                         <div className="relative h-6 w-6 rounded-full overflow-hidden">
                           <Image
-                            src={referees.find((ref) => ref.id === playData.refereeId)?.imageUrl || "/placeholder.svg"}
+                            src={referees.find((ref) => ref.id === playData.refereeId)?.imageUrl || "/placeholder.png"}
                             alt="Referee"
                             fill
                             className="object-cover"
@@ -550,7 +550,7 @@ export default function PlayPage() {
                     <div className="flex-shrink-0">
                       <div className="relative h-8 w-8 rounded-full overflow-hidden bg-gray-700">
                         <Image
-                          src="/placeholder.svg"
+                          src="/placeholder.png"
                           alt="Your avatar"
                           fill
                           className="object-cover"
@@ -581,7 +581,7 @@ export default function PlayPage() {
                         <div className="flex-shrink-0">
                           <div className="relative h-8 w-8 rounded-full overflow-hidden">
                             <Image
-                              src={comment.avatar || "/placeholder.svg"}
+                              src={comment.avatar || "/placeholder.png"}
                               alt={comment.user}
                               fill
                               className="object-cover"
